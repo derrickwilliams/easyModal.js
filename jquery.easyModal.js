@@ -12,8 +12,6 @@
 /*jslint browser: true*/
 /*global jQuery*/
 
-git@github.com:derrickwilliams/easyModal.js.g
-
 // setting up debounce
 (function (factory) {
   var FUNC_NAME = 'smartModalResize';
