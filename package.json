@@ -1,0 +1,27 @@
+{
+  "name": "easy-modal",
+  "version": "1.0.0",
+  "description": "A minimal jQuery modal that works with your CSS.",
+  "main": "jquery.easy-modal.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derrickwilliams/easyModal.js.git"
+  },
+  "keywords": [
+    "modal",
+    "jquery",
+    "npm"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/derrickwilliams/easyModal.js/issues"
+  },
+  "homepage": "https://github.com/derrickwilliams/easyModal.js#readme",
+  "dependencies": {
+    "jquery": "^1.11.3"
+  }
+}

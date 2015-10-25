@@ -35,12 +35,26 @@
           timeout = setTimeout(delayed, threshold || 100);
       };
   }
-  // smartModalResize 
+  // smartModalResize
   jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 
 })(jQuery,'smartModalResize');
 
-(function ($) {
+
+// Uses CommonJS, AMD or browser globals to create a jQuery plugin.
+
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node/CommonJS
+        module.exports = factory(require('jquery'));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
     "use strict";
     var methods = {
         init: function (options) {
@@ -201,4 +215,4 @@
 
     };
 
-}(jQuery));
+}));
