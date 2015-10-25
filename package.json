@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/derrickwilliams/easyModal.js.git"
   },
+  "main": "jquery.easyModal.js",
   "keywords": [
     "modal",
     "jquery",
