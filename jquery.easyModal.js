@@ -12,8 +12,24 @@
 /*jslint browser: true*/
 /*global jQuery*/
 
-(function($,sr){
+git@github.com:derrickwilliams/easyModal.js.g
 
+// setting up debounce
+(function (factory) {
+  var FUNC_NAME = 'smartModalResize';
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['jquery'], (function fn($) {
+      factory($, FUNC_NAME)
+    }));
+  } else if (typeof module === 'object' && module.exports) {
+    // Node/CommonJS
+    module.exports = factory(require('jquery'), FUNC_NAME);
+  } else {
+    // Browser globals
+    factory(jQuery, FUNC_NAME);
+  }
+}(function($, sr){
   // debouncing function from John Hann
   // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
   var debounce = function (func, threshold, execAsap) {
@@ -37,9 +53,7 @@
   }
   // smartModalResize
   jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
-
-})(jQuery,'smartModalResize');
-
+}));
 
 // Uses CommonJS, AMD or browser globals to create a jQuery plugin.
 
