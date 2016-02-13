@@ -67,6 +67,52 @@
         factory(jQuery);
     }
 }(function ($) {
+
+    function positionModal(options, $overlay, $modal) {
+      var overlayZ = options.updateZIndexOnOpen ? options.zIndex() : parseInt($overlay.css('z-index'), 10),
+          modalZ = overlayZ + 100;
+
+      var windowWidth = $(window).width()
+
+      var modalStyle = {
+        'display' : 'block',
+        'z-index': modalZ
+      };
+
+      $.extend(modalStyle, getPositionStyle(windowWidth));
+
+      $overlay.css({'z-index': overlayZ, 'display': 'block'});
+
+      $modal.css(modalStyle);
+
+      if (options.onOpen && typeof options.onOpen === 'function') {
+          // onOpen callback receives as argument the modal window
+          options.onOpen($modal[0]);
+      }
+    }
+
+    function getPositionStyle(windowWidth) {
+      if (windowWidth <= 768)  {
+        return {
+          width: '100%',
+          height: '100%',
+          'min-height': '450px',
+          top: 0, 
+          left: 0, 
+          bottom: 0, 
+          right: 0,
+        };
+      }
+      else {
+        return {
+          width: '600px',
+          height: '630px',
+          top: '25px',
+          left: (windowWidth - 600) / 2
+        };
+      }
+    }
+
     "use strict";
     var methods = {
         init: function (options) {
@@ -120,39 +166,20 @@
                     'width': '100%',
                     'background': o.overlayColor,
                     'opacity': o.overlayOpacity,
-                    'overflow': 'auto'
+                    'overflow-x': 'hidden'
                 }).appendTo(o.overlayParent);
 
                 $modal.css({
                     'display': 'none',
-                    'position' : 'fixed',
+                    'position' : 'absolute',
+                    overflow: 'auto',
                     // When updateZIndexOnOpen is set to true, we avoid computing the z-index on initialization,
                     // because the value would be replaced when opening the modal.
-                    'z-index': (o.updateZIndexOnOpen ? 0 : o.zIndex() + 1),
-                    'left' : parseInt(o.left, 10) > -1 ? o.left + 'px' : 50 + '%',
-                    'top' : parseInt(o.top, 10) > -1 ? o.top + 'px' : 50 + '%'
+                    'z-index': (o.updateZIndexOnOpen ? 0 : o.zIndex() + 1)
                 });
 
                 $modal.bind('openModal', function () {
-                    var overlayZ = o.updateZIndexOnOpen ? o.zIndex() : parseInt($overlay.css('z-index'), 10),
-                        modalZ = overlayZ + 1;
-
-                    if(o.transitionIn !== '' && o.transitionOut !== ''){
-                        $modal.removeClass(o.transitionOut).addClass(o.transitionIn);
-                    }
-                    $modal.css({
-                        'display' : 'block',
-                        'margin-left' : (parseInt(o.left, 10) > -1 ? 0 : -($modal.outerWidth() / 2)) + 'px',
-                        'margin-top' : (parseInt(o.top, 10) > -1 ? 0 : -($modal.outerHeight() / 2)) + 'px',
-                        'z-index': modalZ
-                    });
-
-                    $overlay.css({'z-index': overlayZ, 'display': 'block'});
-
-                    if (o.onOpen && typeof o.onOpen === 'function') {
-                        // onOpen callback receives as argument the modal window
-                        o.onOpen($modal[0]);
-                    }
+                  positionModal(o, $overlay, $modal);
                 });
 
                 $modal.bind('closeModal', function () {
@@ -188,12 +215,7 @@
                 });
 
                 $(window).smartModalResize(function(){
-                    if (o.hasVariableWidth) {
-                        $modal.css({
-                            'margin-left' : (parseInt(o.left, 10) > -1 ? 0 : -($modal.outerWidth() / 2)) + 'px',
-                            'margin-top' : (parseInt(o.top, 10) > -1 ? 0 : -($modal.outerHeight() / 2)) + 'px'
-                        });
-                    }
+                  positionModal(o, $overlay, $modal);
                 });
 
                 // Close when button pressed
